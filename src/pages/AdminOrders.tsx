@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { formatCurrency, formatDate, getOrderStatusColor } from '../utils/formatters';
 import { Order } from '../types';
 import api from '../utils/api';
-import { Package, User, MapPin, Phone, Clock, CheckCircle, XCircle, ChefHat } from 'lucide-react';
+import { Package, User, MapPin, Phone, Clock, CheckCircle, XCircle, ChefHat, Trash2 } from 'lucide-react';
 import { Loader } from '@/components/ui/loader';
 
 export const AdminOrders = () => {
@@ -36,6 +36,18 @@ export const AdminOrders = () => {
         } catch (error: unknown) {
             console.error('Failed to update order status:', error);
             alert('Failed to update order status');
+        }
+    };
+
+    const handleDeleteOrder = async (orderId: string) => {
+        if (!confirm('Are you sure you want to delete this order?')) return;
+
+        try {
+            await api.delete(`/orders/${orderId}`);
+            setOrders(prev => prev.filter(order => order._id !== orderId));
+        } catch (error: unknown) {
+            console.error('Failed to delete order:', error);
+            alert('Failed to delete order');
         }
     };
 
@@ -175,9 +187,14 @@ export const AdminOrders = () => {
                                                             <span className="font-medium">{item.quantity}x</span>
                                                             <span>{item.menuItem?.name || 'Item not found'}</span>
                                                             {!item.menuItem && (
-                                                                <Badge variant="outline" className="text-xs">
-                                                                    Deleted Item
-                                                                </Badge>
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="destructive"
+                                                                    onClick={() => handleDeleteOrder(order._id)}
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                    Delete
+                                                                </Button>
                                                             )}
                                                         </div>
                                                         <div className="text-right">

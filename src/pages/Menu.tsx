@@ -6,23 +6,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Badge } from '../components/ui/badge';
 import { Plus, Minus } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
-import { Loader } from '@/components/ui/loader';
 
 export const Menu = () => {
-    const { menuItems, isLoading, fetchMenuItems } = useMenuStore();
+    const { menuItems, fetchMenuItems } = useMenuStore();
     const { addItem, getItemQuantity, updateQuantity } = useCartStore();
 
     useEffect(() => {
         fetchMenuItems();
     }, [fetchMenuItems]);
 
-    if (isLoading) {
-        return (
-            <div className="container mx-auto p-6">
-                <Loader variant='spinner' />
-            </div>
-        );
-    }
 
     return (
         <div className="container mx-auto p-6">
