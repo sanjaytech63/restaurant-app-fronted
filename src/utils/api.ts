@@ -2,7 +2,7 @@ import axios, { AxiosError, type AxiosInstance, type AxiosResponse } from 'axios
 import type { ApiError } from '../types';
 
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://restaurant-app-bakend.onrender.com/api';
 
 const api: AxiosInstance = axios.create({
     baseURL: API_BASE_URL,
