@@ -9,9 +9,13 @@ import { Textarea } from '../components/ui/textarea';
 import { Minus, Plus, Trash2, ShoppingCart } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
 import api from '../utils/api';
+import { Loader } from '@/components/ui/loader';
+import { useAuthStore } from '@/stores/authStore';
 
 export const Cart = () => {
   const { items, updateQuantity, removeItem, getTotalPrice, clearCart } = useCartStore();
+  const { user } = useAuthStore();
+
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [deliveryAddress, setDeliveryAddress] = useState('');
@@ -26,6 +30,7 @@ export const Cart = () => {
     setIsLoading(true);
     try {
       const orderData = {
+        customer: user?._id,
         items: items.map(item => ({
           menuItem: item.menuItem._id,
           quantity: item.quantity
@@ -83,7 +88,7 @@ export const Cart = () => {
                       {formatCurrency(item.menuItem.price)} each
                     </p>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <Button
                       variant="outline"
@@ -92,11 +97,11 @@ export const Cart = () => {
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
-                    
+
                     <span className="w-8 text-center font-medium">
                       {item.quantity}
                     </span>
-                    
+
                     <Button
                       variant="outline"
                       size="icon"
@@ -104,7 +109,7 @@ export const Cart = () => {
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
-                    
+
                     <Button
                       variant="destructive"
                       size="icon"
@@ -114,7 +119,7 @@ export const Cart = () => {
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="mt-2 text-right font-semibold">
                   Total: {formatCurrency(item.menuItem.price * item.quantity)}
                 </div>
@@ -142,7 +147,7 @@ export const Cart = () => {
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
                 <Input
@@ -154,7 +159,7 @@ export const Cart = () => {
                   required
                 />
               </div>
-              
+
               <div className="border-t pt-4 space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
@@ -165,14 +170,14 @@ export const Cart = () => {
                   <span>{formatCurrency(getTotalPrice())}</span>
                 </div>
               </div>
-              
-              <Button 
-                onClick={handlePlaceOrder} 
+
+              <Button
+                onClick={handlePlaceOrder}
                 disabled={isLoading}
                 className="w-full"
                 size="lg"
               >
-                {isLoading ? 'Placing Order...' : 'Place Order'}
+                {isLoading ? <div className='flex items-center gap-2'><Loader variant='spinner' /> <span> Placing Order...</span></div> : 'Place Order'}
               </Button>
             </CardContent>
           </Card>

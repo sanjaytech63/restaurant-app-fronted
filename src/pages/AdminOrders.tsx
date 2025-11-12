@@ -12,6 +12,7 @@ import { Loader } from '@/components/ui/loader';
 export const AdminOrders = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [updatingStatusId, setUpdatingStatusId] = useState<string | null>(null);
 
     useEffect(() => {
         fetchOrders();
@@ -30,12 +31,19 @@ export const AdminOrders = () => {
     };
 
     const updateOrderStatus = async (orderId: string, status: Order['status']) => {
+        setUpdatingStatusId(orderId);
         try {
             await api.patch(`/orders/${orderId}/status`, { status });
-            fetchOrders(); // Refresh orders
+            setOrders(prev =>
+                prev.map(order =>
+                    order._id === orderId ? { ...order, status } : order
+                )
+            );
         } catch (error: unknown) {
             console.error('Failed to update order status:', error);
             alert('Failed to update order status');
+        } finally {
+            setUpdatingStatusId(null);
         }
     };
 
@@ -153,6 +161,7 @@ export const AdminOrders = () => {
                                                     <Select
                                                         value={order.status}
                                                         onValueChange={(value: Order['status']) => updateOrderStatus(order._id, value)}
+                                                        disabled={updatingStatusId === order._id}
                                                     >
                                                         <SelectTrigger className="w-40">
                                                             <SelectValue />
@@ -165,13 +174,13 @@ export const AdminOrders = () => {
                                                             <SelectItem value="cancelled">Cancelled</SelectItem>
                                                         </SelectContent>
                                                     </Select>
-
                                                     {nextStatus && (
                                                         <Button
                                                             size="sm"
                                                             onClick={() => updateOrderStatus(order._id, nextStatus)}
+                                                            disabled={updatingStatusId === order._id} 
                                                         >
-                                                            Mark as {nextStatus}
+                                                            {updatingStatusId === order._id ? <div className='flex items-center gap-2'><Loader variant='spinner' /> <span> Updating...</span></div> : `Mark as ${nextStatus}`}
                                                         </Button>
                                                     )}
                                                 </div>

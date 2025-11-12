@@ -5,6 +5,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
+import { Loader } from '@/components/ui/loader';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -60,7 +61,7 @@ export const Login = () => {
               />
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? <div className='flex items-center gap-2'><Loader variant='spinner' /> <span>Signing in...</span></div> : 'Sign in'}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">

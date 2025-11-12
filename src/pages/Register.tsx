@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Loader } from '@/components/ui/loader';
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -127,7 +128,7 @@ export const Register = () => {
                         </div>
 
                         <Button type="submit" className="w-full" disabled={isLoading}>
-                            {isLoading ? 'Creating Account...' : 'Create Account'}
+                            {isLoading ? <div className='flex items-center gap-2'><Loader variant='spinner' /> <span>Creating Account...</span></div> : 'Create Account'}
                         </Button>
                     </form>
                     <div className="mt-4 text-center text-sm">

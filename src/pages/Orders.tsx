@@ -6,6 +6,7 @@ import { formatCurrency, formatDate, getOrderStatusColor } from '../utils/format
 import { Order } from '../types';
 import api from '../utils/api';
 import { Package, Clock, CheckCircle, XCircle, ChefHat } from 'lucide-react';
+import { Loader } from '@/components/ui/loader';
 
 export const Orders = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -39,9 +40,8 @@ export const Orders = () => {
     };
 
     if (isLoading) {
-        return null
+        return <div className="min-h-screen flex items-center justify-center"><Loader variant='rotate' /></div>;
     }
-
 
     return (
         <div className="container mx-auto p-6">
