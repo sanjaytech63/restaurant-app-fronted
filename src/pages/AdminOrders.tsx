@@ -116,7 +116,7 @@ export const AdminOrders = () => {
                                             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                                                 <div className="flex items-center gap-1">
                                                     <User className="h-4 w-4" />
-                                                    <span>{order.customer.name[1]}</span>
+                                                    <span className=' capitalize'>{order.customer.name}</span>
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <Clock className="h-4 w-4" />
