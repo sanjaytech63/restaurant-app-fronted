@@ -103,12 +103,17 @@ export const Orders = () => {
                                         <h4 className="font-semibold">Order Items</h4>
                                         <div className="space-y-2">
                                             {order.items.map((item, index) => (
-                                                <div key={index} className="flex items-center justify-between text-sm">
+                                                <div key={index} className="flex items-center justify-between text-sm p-2 bg-muted/50 rounded">
                                                     <div className="flex items-center gap-2">
                                                         <span className="font-medium">{item.quantity}x</span>
-                                                        {/* <span>{item.menuItem.name}</span> */}
+                                                        <span>{item.menuItem?.name || 'Item not found'}</span>
                                                     </div>
-                                                    <span>{formatCurrency(item.price * item.quantity)}</span>
+                                                    <div className="text-right">
+                                                        <div>{formatCurrency(item.price * item.quantity)}</div>
+                                                        <div className="text-muted-foreground text-xs">
+                                                            {formatCurrency(item.price)} each
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>

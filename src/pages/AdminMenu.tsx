@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Plus, Edit, Trash2, Utensils } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
 import { MenuItem } from '../types';
+import { Loader } from '@/components/ui/loader';
 
 export const AdminMenu = () => {
     const { menuItems, isLoading, fetchMenuItems, createMenuItem, updateMenuItem, deleteMenuItem } = useMenuStore();
@@ -103,6 +104,10 @@ export const AdminMenu = () => {
         resetForm();
         setIsDialogOpen(true);
     };
+
+    if (isLoading) {
+        return <div className="min-h-screen flex items-center justify-center"><Loader variant='rotate' /></div>;
+    }
 
     return (
         <div className="container mx-auto p-6">
